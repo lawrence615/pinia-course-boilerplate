@@ -4,8 +4,9 @@ import ProductCard from "@/components/ProductCard.vue";
 // import products from "@/data/products.json";
 
 import { useProduct } from "./store/product";
+import { storeToRefs } from "pinia";
 
-const productStore = useProduct()
+const {products} = storeToRefs(useProduct())
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const productStore = useProduct()
     <TheHeader />
     <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
       <ProductCard
-        v-for="product in productStore.products"
+        v-for="product in products"
         :key="product.name"
         :product="product"
       />
