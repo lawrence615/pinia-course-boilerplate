@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import products from "@/data/products.json";
+// import products from "@/data/products.json";
 
 export const useProduct = defineStore("product", {
   state: () => {
@@ -9,8 +9,8 @@ export const useProduct = defineStore("product", {
     };
   },
   actions: {
-    fill() {
-      this.products = products;
+    async fill() {
+      this.products = (await import("@/data/products.json")).default
     },
   },
 });
