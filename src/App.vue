@@ -8,35 +8,59 @@ import { useProduct } from "./store/product";
 import { useCart } from "./store/cart";
 
 const productStore = useProduct();
-const carttStore = useCart();
+const cartStore = useCart();
 
 productStore.fill();
 
 const history = reactive([]);
 
+const future = reactive([]);
+
 const doingHistory = ref(false);
 
-history.push(JSON.stringify(carttStore.$state));
+history.push(JSON.stringify(cartStore.$state));
 
 const undo = () => {
   if (history.length === 1) return;
 
   doingHistory.value = true;
 
-  history.pop();
+  future.push(history.pop());
 
-  carttStore.$state = JSON.parse(history.at(-1));
+  cartStore.$state = JSON.parse(history.at(-1));
 
   doingHistory.value = false;
 };
 
-carttStore.$subscribe((mutations, state) => {
+const redo = () => {
+  // pop the last element from the future array as it's the last element to be undone
+  const latestState = future.pop();
+
+  // if the no latest state. we return as there is nothing to redo
+  if (!latestState) return;
+
+  // set doingHistory to true
+  doingHistory.value = true;
+
+  // push the latest state back on to the history for it to available for undo again
+  history.push(latestState);
+
+  // replace cartStore.$state with the latestState
+  cartStore.$state = JSON.parse(latestState);
+
+  // set doingHistory to false
+  doingHistory.value = false;
+};
+
+cartStore.$subscribe((mutations, state) => {
   if (!doingHistory.value) {
     history.push(JSON.stringify(state));
+
+    future.splice(0,future.length)
   }
 });
 
-carttStore.$onAction(({ name, store, args, after, onError }) => {
+cartStore.$onAction(({ name, store, args, after, onError }) => {
   if (name === "addItems") {
     after(() => {
       console.log(args[0], args[1]);
@@ -55,6 +79,7 @@ carttStore.$onAction(({ name, store, args, after, onError }) => {
 
     <div class="mb-5 flex justify-end">
       <AppButton @click="undo">Undo</AppButton>
+      <AppButton class="ml-2" @click="redo">Redo</AppButton>
     </div>
 
     <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
@@ -62,7 +87,7 @@ carttStore.$onAction(({ name, store, args, after, onError }) => {
         v-for="product in productStore.products"
         :key="product.name"
         :product="product"
-        @addToCart="carttStore.addItems($event, product)"
+        @addToCart="cartStore.addItems($event, product)"
       />
     </ul>
   </div>
