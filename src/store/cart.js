@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, acceptHMRUpdate } from "pinia";
 import { groupBy } from "lodash";
 
 import { useAuth } from "@/store/auth";
@@ -64,3 +64,7 @@ export const useCart = defineStore("cart", {
     },
   },
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useCart, import.meta.hot));
+}
