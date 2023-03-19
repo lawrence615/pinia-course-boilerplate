@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { groupBy } from "lodash";
 
+import { useAuth } from "@/store/auth";
+
 export const useCart = defineStore("cart", {
   state: () => {
     return {
@@ -39,6 +41,11 @@ export const useCart = defineStore("cart", {
     total: (state) => state.items.reduce((p, c) => p + c.price, 0),
   },
   actions: {
+    checkout(){
+      const authStore = useAuth()
+
+      alert(`${authStore.username} just bought ${this.count} items at a total $${this.total}`)
+    },
     addItems(count, item) {
       count = parseInt(count);
 
