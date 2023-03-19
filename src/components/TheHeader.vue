@@ -1,5 +1,5 @@
 <script>
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 
 import CartWidget from "./CartWidget.vue";
 import { useAuth } from "../store/auth";
@@ -12,6 +12,9 @@ export default {
       user: store => `Hello, ${store.username}`,
     }),
   },
+  methods:{
+    ...mapActions(useAuth, ['visitTwitterProfile'])
+  }
 };
 </script>
 
@@ -22,7 +25,7 @@ export default {
   >
     <h1 class="text-4xl text-gray-700 font-bold">The Pineapple Stand</h1>
     <div>
-      <span class="mr-5">{{ user }}</span>
+      <span class="mr-5 cursor-pointer" @click="visitTwitterProfile">{{ user }}</span>
       <CartWidget class="inline-block" />
     </div>
   </header>

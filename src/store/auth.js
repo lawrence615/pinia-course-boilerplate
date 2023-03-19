@@ -3,10 +3,12 @@ import { defineStore } from "pinia";
 export const useAuth = defineStore("auth", {
     state:()=>{
         return {
-            // username:'wyze'
+            username:'mashLarry'
         }
     },
-    getters:{
-        username:() => 'wyze2'
+    actions:{
+        visitTwitterProfile(){
+            window.open(`https://twitter.com/${this.username}`, '_blank')
+        }
     }
 });
