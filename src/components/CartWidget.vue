@@ -1,17 +1,21 @@
 <script setup>
 // imports
 import { ref } from "vue";
+import { useCart } from "../store/cart";
 import CartItem from "./CartItem.vue";
 
 // data
 const active = ref(false);
+
+const cartStore = useCart()
+
 </script>
 <template>
   <div class="relative">
     <!-- Icon that always shows -->
     <span class="cursor-pointer" @click="active = true">
       <fa icon="shopping-cart" size="lg" class="text-gray-700" />
-      <div class="cart-count absolute">10</div>
+      <div class="cart-count absolute">{{ cartStore.count }}</div>
     </span>
     <!-- Modal Overlay only shows when cart is clicked on -->
     <AppModalOverlay :active="active" @close="active = false">
