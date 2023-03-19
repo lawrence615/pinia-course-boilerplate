@@ -14,9 +14,11 @@ productStore.fill();
 const addToCart = (count, product) => {
   count = parseInt(count)
 
-  for (let index = 0; index < count; index++) {
-    carttStore.items.push(product)    
-  }
+  carttStore.$patch((state) => {
+    for (let index = 0; index < count; index++) {
+      state.items.push(product);
+    }
+  });
 }
 </script>
 
