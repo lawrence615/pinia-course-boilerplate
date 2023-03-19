@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { groupBy, sum } from "lodash";
+import { groupBy, reject, sum } from "lodash";
 
 export const useCart = defineStore("cart", {
   state: () => {
@@ -31,5 +31,8 @@ export const useCart = defineStore("cart", {
         this.items.push({ ...item });
       }
     },
+    clearItem(name){
+      this.items = this.items.filter((item) => item.name !== name);
+    }
   },
 });
