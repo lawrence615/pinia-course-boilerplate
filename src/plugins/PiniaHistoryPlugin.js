@@ -1,6 +1,8 @@
 import { reactive, ref } from "vue";
 
 export function PiniaHistoryPlugin({ pinia, app, store, options }) {
+  if (!options.historyEnabled) return;
+
   const history = reactive([]);
 
   const future = reactive([]);
