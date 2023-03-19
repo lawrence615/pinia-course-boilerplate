@@ -9,7 +9,7 @@ export default {
   components: { CartWidget },
   computed: {
     ...mapState(useAuth, {
-      user: "username",
+      user: store => `Hello, ${store.username}`,
     }),
   },
 };
