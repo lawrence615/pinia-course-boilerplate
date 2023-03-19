@@ -1,4 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
+
+import { useLocalStorage } from "@vueuse/core";
+
 import { groupBy } from "lodash";
 
 import { useAuth } from "@/store/auth";
@@ -7,7 +10,7 @@ export const useCart = defineStore("cart", {
   historyEnabled: true,
   state: () => {
     return {
-      items: [],
+      items: useLocalStorage("cart:items", []),
     };
   },
   getters: {
