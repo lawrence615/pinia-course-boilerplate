@@ -4,6 +4,7 @@ import { groupBy } from "lodash";
 import { useAuth } from "@/store/auth";
 
 export const useCart = defineStore("cart", {
+  historyEnabled: true,
   state: () => {
     return {
       items: [],
