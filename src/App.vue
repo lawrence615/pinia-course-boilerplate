@@ -10,7 +10,17 @@ const productStore = useProduct();
 const carttStore = useCart();
 
 productStore.fill();
+carttStore.$onAction(({ name, store, args, after, onError }) => {
+  if (name === "addItems") {
+    after(() => {
+      console.log(args[0], args[1]);
+    });
 
+    onError((error)=>{
+      console.log('an error occurred:', error.message);
+    })
+  }
+});
 </script>
 
 <template>
