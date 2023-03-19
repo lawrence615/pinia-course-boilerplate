@@ -13,20 +13,19 @@ export const useCart = defineStore("cart", {
     count: (state) => state.items.length,
     isEmpty: (state) => state.count === 0,
     grouped: (state) => {
-
       // temporarily set results into a variable
-      const grouped = groupBy(state.items, (item) => item.name)
+      const grouped = groupBy(state.items, (item) => item.name);
 
       // take each of the object keys and sort them alphabetically
-      const sorted = Object.keys(grouped).sort()
+      const sorted = Object.keys(grouped).sort();
 
       // initialize new variable that will hold newly sorted results
-      let inOrder = {}
+      let inOrder = {};
 
       // loop through sorted puttin them in inOrder variable one at a time
-      sorted.forEach(key => inOrder[key] = grouped[key])
+      sorted.forEach((key) => (inOrder[key] = grouped[key]));
 
-      return inOrder
+      return inOrder;
     },
     groupCount: (state) => (name) => state.grouped[name].length,
     // total: (state) => {
@@ -41,10 +40,12 @@ export const useCart = defineStore("cart", {
     total: (state) => state.items.reduce((p, c) => p + c.price, 0),
   },
   actions: {
-    checkout(){
-      const authStore = useAuth()
+    checkout() {
+      const authStore = useAuth();
 
-      alert(`${authStore.username} just bought ${this.count} items at a total $${this.total}`)
+      alert(
+        `${authStore.username} just bought ${this.count} items at a total $${this.total}`
+      );
     },
     addItems(count, item) {
       count = parseInt(count);
@@ -57,12 +58,9 @@ export const useCart = defineStore("cart", {
       this.items = this.items.filter((item) => item.name !== name);
     },
     updateCartItem(count, item) {
-      console.log('updateCartItem:',count)
-      count = parseInt(count);
+      this.clearItem(item.name);
 
-      this.clearItem(item.name)
-
-      this.addItems(count, item)
+      this.addItems(count, item);
     },
   },
 });
