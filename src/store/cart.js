@@ -12,15 +12,16 @@ export const useCart = defineStore("cart", {
     isEmpty: (state) => state.count === 0,
     grouped: (state) => groupBy(state.items, (item) => item.name),
     groupCount: (state) => (name) => state.grouped[name].length,
-    total: (state) => {
-      let total = 0;
+    // total: (state) => {
+    //   let total = 0;
 
-      for (let i = 0; i < state.items.length; i++) {
-        total += state.items[i].price;
-      }
+    //   for (let i = 0; i < state.items.length; i++) {
+    //     total += state.items[i].price;
+    //   }
 
-      return total;
-    },
+    //   return total;
+    // },
+    total: (state) => state.items.reduce((p, c) => p + c.price, 0),
   },
   actions: {
     addItems(count, item) {
